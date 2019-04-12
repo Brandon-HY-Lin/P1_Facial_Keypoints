@@ -4,8 +4,12 @@
 
 [architecture]: https://github.com/Brandon-HY-Lin/P1_Facial_Keypoints/blob/master/images/architecture.png "Architecture"
 
+[result_1]: https://github.com/Brandon-HY-Lin/P1_Facial_Keypoints/blob/master/images/result_1.png "Result 1"
+
+[result_2]: https://github.com/Brandon-HY-Lin/P1_Facial_Keypoints/blob/master/images/result_2.png "Result 2"
+
 # Abstract
-This work adopts architecture of 1 pretrained DenseNet121, 4 CNN layers, and 1 FC layer. The smooth L1 Loss of training set is 0.0136 after 36 epochs. 
+This work adopts architecture of 1 pretrained DenseNet121, 4 CNN layers, and 1 FC layer. The smooth L1 Loss of training set is 0.0136 after 36 epochs based on [YouTube faces dataset][dataset].
 
 
 # Introduction
@@ -28,35 +32,70 @@ For loss function, I choose SmoothL1 which tightly fits to labels. Compared with
 
 
 # Results
-The number of test images is 40,504. The training time for 3 epochs is 8 hours. The training loss is 1.93 and BLEU-4 of testing dataset is 0.517.
+The smooth L1 Loss of training set is 0.0136 after 36 epochs. The predicted keypoints is shown below.
+
+![Result 1][result_1]
+![Result 2][result_2]
 
 
 # Conclusion
-In this work, CNN-RNN model is implemented and it achieves BLEU-4 score of 0.517.
-
-
-# Future Works
-Visualize attention by implementing [Xu's work](https://arxiv.org/pdf/1502.03044.pdf).
+In this work, an architecture with a pretrained DenseNet121, 4 conv layers, and directed path is implemented. The smooth L1 loss is 0.0136.
 
 
 # Appendix
 #### Hyper-Parameters
 
-* Encoder
-	* CNN
-		* pretrained ResNet50 provided by pytorch
-            * input size: (224, 224, 1;)
-        * Linear:
-            * output size: 256
-* Decoder
-    * Embedding:
-        * input size: 9955    (vocabulary size)
-        * output size: 512
-	* LSTM
-		* #layer: 1
-        * input size: 512
-	    * hidden size: 512
-	* Fully-connected layer
-		* layer: 1
-		* input size: 512
-		* output size: 9955   (vocabulary size)
+* Conv Path
+    * CNN Layer 1:
+        * Conv1:
+            * input shape: (1, 224, 224)
+            * ouput shape: (16, 224, 224)
+            * kernel: 5
+            * padding: 2
+        * MaxPool 1:
+            * stride: 2
+        * Dropout 1: 0.05
+    * CNN Layer 2:
+        * Conv2:
+            * input shape: (16, 112, 112)
+            * ouput shape: (32, 112, 112)
+            * kernel: 5
+            * padding: 2
+        * MaxPool 2:
+            * stride: 2
+        * Dropout 2: 0.10
+    * CNN Layer 3:
+        * Conv3:
+            * input shape: (32, 56, 56)
+            * ouput shape: (64, 56, 56)
+            * kernel: 5
+            * padding: 2
+        * MaxPool 3:
+            * stride: 2
+        * Dropout 1: 0.15
+    * CNN Layer 4:
+        * Conv4:
+            * input shape: (64, 28, 28)
+            * ouput shape: (128, 24, 24)
+            * kernel: 5
+            * padding: 2
+        * MaxPool 4:
+            * stride: 2
+        * Dropout 1: 0.20
+    * FC 1:
+        * input dim: 12*12*128
+        * ouput dim: 1024
+
+* Direct Path
+    * MaxPool 1:
+        * stride: 4
+        * output shape: (56, 56)
+    * MaxPool 2:
+        * stride: 8
+        * ouput shape: (28, 28)
+    * MaxPool 3:
+        * stride: 16 
+        * output shape: (14, 14)
+    * FC 2:
+        * input dim: 4116 = (56x56 + 28x28 + 14x14)
+        * ouput dim: 1024
