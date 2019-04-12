@@ -2,6 +2,8 @@
 
 [facial_keypoints_sample]: https://github.com/Brandon-HY-Lin/P1_Facial_Keypoints/blob/master/images/key_pts_example.png "Facial keypoints sample"
 
+[architecture]: https://github.com/Brandon-HY-Lin/P1_Facial_Keypoints/blob/master/images/architecture.png "Architecture"
+
 # Abstract
 This work adopts architecture of 1 pretrained DenseNet121, 4 CNN layers, and 1 FC layer. The smooth L1 Loss of training set is 0.0136 after 36 epochs. 
 
@@ -13,16 +15,16 @@ Facial keypoints include points around the eyes, nose, and mouth on a face and a
 
 
 # Implementation
-For loss function, I choose SmoothL1 which tightly fits to labels. Compared with MSE loss, SmoothL1 converges faster.
+At first time, I use 6 conv layers, but it converges too slowly. Then I reduce the number of conv to 4. And I also concate downsample input to the 2nd fully-connected layer. In short the architecture is 4 conv + 3 FC. To avoid overfitting, I add dropout layer at each layer.
 
- I firstly used 1 layer fully-connected network as the baseline for MSE loss. Then I switch to SmoothL1. I add batch normalization to speed training at first few epochs. At first time, I use 6 conv layers, but it converges too slowly. Then I reduce the number of conv to 4. And I also concate downsample input to the 2nd fully-connected layer. In short the architecture is 4 conv + 3 FC. To avoid overfitting, I add dropout layer at each layer.
+![architecture][architecture]
 
-Aside from the above architectures, I also tried following architectures which are bad or hard to converge.
 
-    Transfer learning of DensNet121
-    Using pretrained DensNet121
-    Concatenate downsampled input with conv2 or conv3.
+For loss function, I choose SmoothL1 which tightly fits to labels. Compared with MSE loss, SmoothL1 converges faster. Batch normalization is also added to speed training at first few epochs. Aside from the above architectures, I also tried following architectures which are bad or hard to converge.
 
+    * Transfer learning of DensNet121
+    * Using pretrained DensNet121
+    * Concatenate downsampled input with conv2 or conv3.
 
 
 # Results
