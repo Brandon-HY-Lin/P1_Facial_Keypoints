@@ -9,7 +9,7 @@
 [result_2]: https://github.com/Brandon-HY-Lin/P1_Facial_Keypoints/blob/master/images/result_2.png "Result 2"
 
 # Abstract
-This work adopts architecture of 1 pretrained DenseNet121, 4 CNN layers, and 1 FC layer. The smooth L1 Loss of training set is 0.0136 after 36 epochs based on [YouTube faces dataset][dataset].
+This work adopts architecture of 1 pretrained DenseNet121, 4 CNN layers, etc. The smooth L1 Loss of training set is 0.0136 after 36 epochs based on [YouTube faces dataset][dataset].
 
 
 # Introduction
